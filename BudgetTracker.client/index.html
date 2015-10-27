@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Budget Tracker</title>
+
+  <!-- Bootstrap -->
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootswatch CSS file -->
+  <link href="bower_components/bootswatch-cerulean-wiredep/dist/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate CSS file -->
+  <link href="bower_components/animate.css/animate.min.css" rel="stylesheet">
+  <!-- Custom CSS file -->
+  <link href="css/custom.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body ng-controller="BudgetController">
+
+  <div class="container">
+
+    <!-- application title -->
+    <h1 class="bg-info animated bounceInDown text-center">Take Control of Your Finances with Budget Tracker!
+    </h1><!-- end application title -->
+
+    <!-- row for income and expenses -->
+    <div class="row">
+      <!-- column for income -->
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="panel panel-success" >
+          <div class="panel-heading">Income</div>
+          <div class="panel-body">
+            <!-- Label and field for new income description -->
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <!--input type="text" class="form-control form-input-text" ng-model="newIncomeDescription"-->
+              <input type="text" class="form-control form-input-text" ng-model="newIncome.description">
+            </div><!-- End form-group-->
+            <!-- Label and field for new income amount -->
+            <div class="form-group">
+              <label class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" ng-model="newIncome.amount">
+              </div><!-- End input-group-->
+            </div><!-- End form-group-->
+
+            <!-- Button to add income entry -->
+            <button class="btn btn-success"
+              ng-click="addIncome()">
+              <span class="glyphicon glyphicon-plus"></span>Add Income Entry
+           </button><!-- End button to add income -->
+
+            <!-- Income entries table -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="entry in incomeEntries">
+                  <td>{{entry.description}}</td>
+                  <td>{{entry.amount | currency}}</td>
+                </tr>
+              </tbody>
+            </table><!-- End income table -->
+
+          </div><!-- End panel body -->
+        </div><!-- End panel for income -->
+      </div><!-- End column for income -->
+
+      <!-- column for expenses -->
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="panel panel-danger" >
+          <div class="panel-heading">Expenses</div>
+          <div class="panel-body">
+            <!-- Label and field for new expense description -->
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <input type="text" class="form-control form-input-text" ng-model="newExpense.description">
+            </div><!-- End form-group-->
+            <!-- Label and field for new expense amount -->
+            <div class="form-group">
+              <label class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" ng-model="newExpense.amount">
+              </div><!-- End input-group-->
+            </div><!-- End form-group-->
+
+            <!-- Button to add expense entry -->
+            <button class="btn btn-danger"
+              ng-click="addExpense()">
+              <span class="glyphicon glyphicon-plus"></span>Add Expense Entry
+           </button><!-- End button to add expense -->
+
+            <!-- Expense entries table -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="entry in expenseEntries">
+                  <td>{{entry.description}}</td>
+                  <td>{{entry.amount | currency}}</td>
+                </tr>
+              </tbody>
+            </table><!-- End expense table -->
+
+          </div><!-- End panel body -->
+        </div><!-- End panel for expenses -->
+      </div><!-- End column for expenses -->
+    </div><!-- End row for income and expenses -->
+
+    <!-- row for summary -->
+    <div class="row">
+      <!-- column for summary -->
+      <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+        <div class="panel panel-primary" >
+          <div class="panel-heading">Summary</div>
+          <div class="panel-body">
+            <!-- row for total income and expenses -->
+            <div class="row">
+              <!-- column for total income -->
+              <div class="col-sm-6 col-sm-offset-2 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-2">
+                <h5>Total Income</h5>
+                <h5>{{totalIncome | currency}}</h5>
+              </div><!-- End column for total income -->
+              <!-- column for total expenses -->
+              <div class="col-sm-4 col-md-4 col-lg-4">
+                <h5>Total Expenses</h5>
+                <h5>{{totalExpenses | currency}}</h5>
+              </div><!-- End column for total expenses -->
+            </div><!-- End row for total income and expenses -->
+            <!-- row for income left after expenses -->
+            <div class="row">
+              <!-- column for income left after expenses -->
+              <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                <h5>Total Income Left After Expenses</h5>
+                <h5 class="text-center">{{incomeLeft | currency}}</h5>
+              </div><!-- End income left after expenses -->
+            </div><!-- row for income left after expenses -->
+          </div><!-- End panel body -->
+        </div><!-- End panel for summary -->
+      </div><!-- End column for summary -->
+    </div><!-- End row for summary -->
+
+  </div><!-- End container -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/angular/angular.js" type="text/javascript"></script>
+  <script src="js/app.js" type="text/javascript"></script>
+  <script src="js/index.ctrl.js" type="text/javascript"></script>
+</body>
+
+</html>
