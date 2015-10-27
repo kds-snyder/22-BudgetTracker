@@ -14,6 +14,11 @@ angular.module('app').controller('BudgetController', function($scope) {
   $scope.totalExpenses = 0;
   $scope.incomeLeft = 0;
 
+  $scope.deficit = 'deficit';
+  $scope.surplus = 'surplus';
+  $scope.balanced = 'balanced';
+  $scope.budgetState = $scope.balanced;
+
   // Add new expense:
   //  Create new expense object, push it to expense array,
   //  and initialize the scope expense object
@@ -23,6 +28,7 @@ angular.module('app').controller('BudgetController', function($scope) {
                       amount: $scope.newExpense.amount}
     $scope.expenseEntries.push(newEntry);
     $scope.updateTotalExpenses();
+    $scope.updateBudgetState();
     $scope.newExpense.amount = 0;
     $scope.newExpense.description = '';
   };
@@ -36,8 +42,22 @@ angular.module('app').controller('BudgetController', function($scope) {
                       amount: $scope.newIncome.amount};
     $scope.incomeEntries.push(newEntry);
     $scope.updateTotalIncome();
+    $scope.updateBudgetState();
     $scope.newIncome.amount = 0;
     $scope.newIncome.description = '';
+  };
+
+  // Update budget state according to income left
+  $scope.updateBudgetState = function() {
+    if ($scope.incomeLeft > 0) {
+      $scope.budgetState = $scope.surplus;
+    }
+    else if ($scope.incomeLeft == 0) {
+      $scope.budgetState = $scope.balanced;
+    }
+    else {
+      $scope.budgetState = $scope.deficit;
+    }
   };
 
   // Update total income and incomeLeft

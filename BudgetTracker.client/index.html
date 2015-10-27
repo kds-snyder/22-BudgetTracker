@@ -37,7 +37,7 @@
     <div class="row">
       <!-- column for income -->
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <div class="panel panel-success" >
+        <div class="panel panel-success animated bounceInLeft" >
           <div class="panel-heading">Income</div>
           <div class="panel-body">
             <!-- Label and field for new income description -->
@@ -83,7 +83,7 @@
 
       <!-- column for expenses -->
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <div class="panel panel-danger" >
+        <div class="panel panel-danger animated bounceInRight" >
           <div class="panel-heading">Expenses</div>
           <div class="panel-body">
             <!-- Label and field for new expense description -->
@@ -131,28 +131,40 @@
     <div class="row">
       <!-- column for summary -->
       <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-        <div class="panel panel-primary" >
+        <div class="panel panel-primary animated bounceInUp">
           <div class="panel-heading">Summary</div>
           <div class="panel-body">
             <!-- row for total income and expenses -->
             <div class="row">
               <!-- column for total income -->
               <div class="col-sm-6 col-sm-offset-2 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-2">
-                <h5>Total Income</h5>
-                <h5>{{totalIncome | currency}}</h5>
+                <h5 class="total-text">Total Income</h5>
+                <h5 class="total-text">{{totalIncome | currency}}</h5>
               </div><!-- End column for total income -->
               <!-- column for total expenses -->
               <div class="col-sm-4 col-md-4 col-lg-4">
-                <h5>Total Expenses</h5>
-                <h5>{{totalExpenses | currency}}</h5>
+                <h5 class="total-text">Total Expenses</h5>
+                <h5 class="total-text">{{totalExpenses | currency}}</h5>
               </div><!-- End column for total expenses -->
             </div><!-- End row for total income and expenses -->
             <!-- row for income left after expenses -->
             <div class="row">
               <!-- column for income left after expenses -->
               <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-                <h5>Total Income Left After Expenses</h5>
-                <h5 class="text-center">{{incomeLeft | currency}}</h5>
+                <!-- Display income left differently acording to budget state -->
+                <div ng-show="budgetState == surplus">
+                  <h5 class="text-center surplus-text">Budget Surplus</h5>
+                  <h5 class="text-center surplus-text">{{incomeLeft | currency}}</h5>
+                </div><!-- End div ng-show="incomeLeft>0" -->
+                <div ng-show="budgetState == balanced">
+                  <h5 class="text-center balanced-text">No Income Left After Expenses</h5>
+                  <h5 class="text-center balanced-text">{{incomeLeft | currency}}</h5>
+                </div><!-- End div ng-show="incomeLeft=0" -->
+                <div ng-show="budgetState == deficit">
+                  <h5 class="text-center deficit-text">Budget Deficit</h5>
+                  <h5 class="text-center deficit-text">{{incomeLeft | currency}}</h5>
+                </div><!-- End div ng-show="incomeLeft<0" -->
+
               </div><!-- End income left after expenses -->
             </div><!-- row for income left after expenses -->
           </div><!-- End panel body -->

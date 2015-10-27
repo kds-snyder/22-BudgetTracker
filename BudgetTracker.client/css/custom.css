@@ -1,9 +1,25 @@
-.form-label {
-  color: #545454
+body {
+  background-color: #FAF5E6;
 }
 
-.form-input-text {
-  color: #191919
+.panel-body {
+background:#F0FFFF;
+}
+
+.total-text {
+  color: Black;
+}
+
+.surplus-text {
+  color: Green;
+}
+
+.deficit-text {
+  color: Red;
+}
+
+.balanced-text {
+  color: #CCA300;  
 }
 
 .panel-default>.panel-heading {
